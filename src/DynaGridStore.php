@@ -411,11 +411,15 @@ class DynaGridStore extends BaseObject
             case Dynagrid::TYPE_DB:
                 $s = $this->_module->dbSettingsDtl;
                 $connection = ArrayHelper::getValue($s, 'connection', 'db');
+                $data = Yii::$app->getDb()->cache(function ($connection) use ($s)
+                {
                 $data = (new Query())
-                    ->select([$s['idAttr'], $s['nameAttr']])
-                    ->from($s['tableName'])
-                    ->where([$s['dynaGridIdAttr'] => $this->_mstKey, $s['categoryAttr'] => $cat])
-                    ->all(Yii::$app->$connection);
+                ->select([$s['idAttr'], $s['nameAttr']])
+                ->from($s['tableName'])
+                ->where([$s['dynaGridIdAttr'] => $this->_mstKey, $s['categoryAttr'] => $cat])
+                ->all($connection);
+                return $data;
+                });
                 return empty($data) ? [] : ArrayHelper::map($data, $s['idAttr'], $s['nameAttr']);
             default:
                 throw new InvalidConfigException('Unknown storage: ' . $this->storage);

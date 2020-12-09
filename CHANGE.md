@@ -1,6 +1,12 @@
 Change Log: `yii2-dynagrid`
 ===========================
 
+## Version 1.5.2
+
+**Date:** 9-Dic-2020
+
+- (enh #232): Added Cache to DynaGridStore Query.
+
 ## Version 1.5.1
 
 **Date:** 24-Feb-2019
